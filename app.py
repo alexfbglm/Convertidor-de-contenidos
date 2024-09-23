@@ -82,7 +82,7 @@ def process_zip_videos(zip_file, output_format):
     
     return output_zip_bytes
 
-# Estilos personalizados para la app y el menú lateral
+# Estilos personalizados para la app, el selectbox y el menú lateral
 st.markdown("""
     <style>
     .main {
@@ -105,13 +105,14 @@ st.markdown("""
     h2 {
         color: #223848;
     }
+
     /* Estilo para el sidebar */
-    .css-1d391kg {  /* Cambiar el color de fondo del sidebar */
+    .css-1d391kg {  
         background-color: #ffffff !important;
         border-radius: 15px;
         padding: 10px;
     }
-    .css-qbe2hs {  /* Color para la selección activa del menú */
+    .css-qbe2hs {  
         background-color: #ff6b6b !important;
         color: white;
         border-radius: 10px;
@@ -122,6 +123,18 @@ st.markdown("""
     }
     .css-1d3k3q9 a:hover {
         color: #009dac !important;
+    }
+
+    /* Estilos para el selectbox (caja de selección) */
+    .stSelectbox>div>div {
+        background-color: white;  /* Fondo blanco */
+        color: #223848;  /* Color del texto */
+        border-radius: 5px;
+        border: 1px solid #ff6b6b;
+    }
+    .stSelectbox>div>div:hover {
+        background-color: #009dac;  /* Cambia al color corporativo */
+        color: white;  /* Texto en blanco al seleccionar */
     }
     </style>
     """, unsafe_allow_html=True)
