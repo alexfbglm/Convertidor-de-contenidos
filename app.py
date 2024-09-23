@@ -18,9 +18,15 @@ def compress_image(image, output_format, max_size_mb=30):
 
 # Función para convertir la imagen a formato JPG o PNG
 def convert_image_to_format(image, output_format):
-    if output_format.lower() == 'jpg':
-        image = image.convert('RGB')  # Convertir a RGB si es JPG
+    output_format = output_format.lower()  # Asegurar que el formato esté en minúsculas
+    
+    # Convertir a RGB si el formato es JPG
+    if output_format == 'jpg':
+        # Convertir solo si la imagen no está ya en RGB
+        if image.mode != 'RGB':
+            image = image.convert('RGB')  # Convertir a RGB si no está ya en ese modo
 
+    # Comprimir y convertir la imagen
     output_img = compress_image(image, output_format)
     return output_img
 
