@@ -207,20 +207,15 @@ def main():
     if 'page' not in st.session_state:
         st.session_state['page'] = "Home"
 
-    st.sidebar.markdown("""
-    <div class="menu">
-        {}
-        {}
-        {}
-        {}
-    </div>
-    """.format(
-        st.sidebar.button(menu_item("Home", "fa-home"), key="home_btn", on_click=lambda: st.session_state.update(page="Home")),
-        st.sidebar.button(menu_item("Convertidor de Imágenes", "fa-image"), key="image_btn", on_click=lambda: st.session_state.update(page="Convertidor de Imágenes")),
-        st.sidebar.button(menu_item("Convertidor de WMP a AVI/MP4", "fa-video"), key="video_btn", on_click=lambda: st.session_state.update(page="Convertidor de WMP a AVI/MP4")),
-        st.sidebar.button(menu_item("Contacto", "fa-envelope"), key="contact_btn", on_click=lambda: st.session_state.update(page="Contacto"))
-    ), unsafe_allow_html=True)
+    # Menú lateral con Font Awesome usando markdown
+    st.sidebar.markdown(f"""
+        <a href="javascript:window.location.reload();" class="menu-item{' selected' if st.session_state['page'] == 'Home' else ''}"><i class="fa fa-home"></i> Home</a>
+        <a href="javascript:window.location.reload();" class="menu-item{' selected' if st.session_state['page'] == 'Convertidor de Imágenes' else ''}"><i class="fa fa-image"></i> Convertidor de Imágenes</a>
+        <a href="javascript:window.location.reload();" class="menu-item{' selected' if st.session_state['page'] == 'Convertidor de WMP a AVI/MP4' else ''}"><i class="fa fa-video"></i> Convertidor de WMP a AVI/MP4</a>
+        <a href="javascript:window.location.reload();" class="menu-item{' selected' if st.session_state['page'] == 'Contacto' else ''}"><i class="fa fa-envelope"></i> Contacto</a>
+    """, unsafe_allow_html=True)
 
+    # Lógica para cambiar entre páginas
     if st.session_state['page'] == "Home":
         show_home()
 
@@ -327,4 +322,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
