@@ -81,7 +81,7 @@ def process_zip_videos(zip_file, output_format):
                             output_zip.writestr(f"{os.path.splitext(file_name)[0]}_converted.{output_format}", converted_video)
     
     return output_zip_bytes
-
+    
 # Cargar Font Awesome para los iconos
 st.markdown("""
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -138,9 +138,7 @@ st.markdown("""
 def menu_item(label, icon, page):
     active_page = st.session_state.get("page", "Home")
     active_class = "selected" if page == active_page else ""
-    if st.sidebar.button(f"{label}", key=page):
-        st.session_state.page = page
-    return f'<a class="menu-item {active_class}" href="#" onclick="window.location.href=\'#{page}\'"><i class="fa {icon}" style="margin-right:10px;"></i>{label}</a>'
+    return f'<a class="menu-item {active_class}" onclick="window.location.href=\'#{page}\'"><i class="fa {icon}" style="margin-right:10px;"></i>{label}</a>'
 
 # Función para convertir una imagen TIFF a JPG o PNG
 def convert_image_to_format(image, output_format):
