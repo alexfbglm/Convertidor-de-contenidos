@@ -82,9 +82,9 @@ def process_zip_videos(zip_file, output_format):
     
     return output_zip_bytes
 
-# Cargar Font Awesome para los iconos
+
+# Estilos personalizados para la app, el selectbox y el menú lateral con recuadro resaltado
 st.markdown("""
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
     .main {
         background-color: #f0f2f6;
@@ -170,11 +170,11 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # Función para mostrar el menú con el estado de sesión
-def menu_item(label, icon, active=False):
+def menu_item(label, active=False):
     class_name = "menu-item"
     if active:
         class_name += " selected"
-    return f'<a class="{class_name}"><i class="fa {icon}" style="margin-right:10px;"></i>{label}</a>'
+    return f'<a class="{class_name}">{label}</a>'
 
 # Página de inicio con explicación
 def show_home():
@@ -207,15 +207,20 @@ def main():
     if 'page' not in st.session_state:
         st.session_state['page'] = "Home"
 
-    # Menú lateral con Font Awesome usando markdown
-    st.sidebar.markdown(f"""
-        <a href="javascript:window.location.reload();" class="menu-item{' selected' if st.session_state['page'] == 'Home' else ''}"><i class="fa fa-home"></i> Home</a>
-        <a href="javascript:window.location.reload();" class="menu-item{' selected' if st.session_state['page'] == 'Convertidor de Imágenes' else ''}"><i class="fa fa-image"></i> Convertidor de Imágenes</a>
-        <a href="javascript:window.location.reload();" class="menu-item{' selected' if st.session_state['page'] == 'Convertidor de WMP a AVI/MP4' else ''}"><i class="fa fa-video"></i> Convertidor de WMP a AVI/MP4</a>
-        <a href="javascript:window.location.reload();" class="menu-item{' selected' if st.session_state['page'] == 'Contacto' else ''}"><i class="fa fa-envelope"></i> Contacto</a>
-    """, unsafe_allow_html=True)
+    st.sidebar.markdown("""
+    <div class="menu">
+        {}
+        {}
+        {}
+        {}
+    </div>
+    """.format(
+        st.sidebar.button("🏠 Home", key="home_btn", on_click=lambda: st.session_state.update(page="Home")),
+        st.sidebar.button("🖼️ Convertidor de Imágenes", key="image_btn", on_click=lambda: st.session_state.update(page="Convertidor de Imágenes")),
+        st.sidebar.button("🎥 Convertidor de WMP a AVI/MP4", key="video_btn", on_click=lambda: st.session_state.update(page="Convertidor de WMP a AVI/MP4")),
+        st.sidebar.button("📧 Contacto", key="contact_btn", on_click=lambda: st.session_state.update(page="Contacto"))
+    ), unsafe_allow_html=True)
 
-    # Lógica para cambiar entre páginas
     if st.session_state['page'] == "Home":
         show_home()
 
