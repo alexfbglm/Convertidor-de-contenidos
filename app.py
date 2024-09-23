@@ -82,7 +82,8 @@ def process_zip_videos(zip_file, output_format):
     
     return output_zip_bytes
 
-# Estilos personalizados para la app, el selectbox y el menú lateral con íconos
+
+# Estilos personalizados para la app, el selectbox y el menú lateral con recuadro resaltado
 st.markdown("""
     <style>
     .main {
@@ -120,9 +121,32 @@ st.markdown("""
     .css-1d3k3q9 a {
         color: #223848 !important;
         text-decoration: none;
+        font-size: 16px;
     }
     .css-1d3k3q9 a:hover {
         color: #009dac !important;
+    }
+
+    /* Estilos para los enlaces del menú, con recuadro resaltado */
+    .menu-item {
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 5px;
+        font-weight: bold;
+        text-align: left;
+        cursor: pointer;
+        display: block;
+        color: #223848;
+        text-decoration: none;
+    }
+    .menu-item:hover {
+        background-color: #009dac;
+        color: white;
+    }
+    .menu-item.selected {
+        background-color: #009dac;
+        color: white;
+        box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
     }
 
     /* Estilos para el selectbox (caja de selección) */
@@ -138,6 +162,13 @@ st.markdown("""
     }
     </style>
     """, unsafe_allow_html=True)
+
+# Función para generar enlaces en el menú con estilo de recuadro resaltado
+def menu_item(label, active=False):
+    class_name = "menu-item"
+    if active:
+        class_name += " selected"
+    return f'<a class="{class_name}" href="#{label.lower()}">{label}</a>'
 
 # Página de inicio con explicación
 def show_home():
@@ -167,17 +198,24 @@ def show_contact():
 
 # Función principal de la app
 def main():
-    st.sidebar.title("📋 Main Menu")
-    # Menú lateral con opciones y emoticonos
-    option = st.sidebar.radio(
-        "",
-        ("🏠 Home", "🖼️ Convertidor de Imágenes", "🎥 Convertidor de WMP a AVI/MP4", "📧 Contacto")
-    )
+    st.sidebar.markdown("""
+    <div class="menu">
+        {}
+        {}
+        {}
+        {}
+    </div>
+    """.format(
+        menu_item("Home", active=True if st.session_state.get('page') == "Home" else False),
+        menu_item("Convertidor de Imágenes", active=True if st.session_state.get('page') == "Convertidor de Imágenes" else False),
+        menu_item("Convertidor de WMP a AVI/MP4", active=True if st.session_state.get('page') == "Convertidor de WMP a AVI/MP4" else False),
+        menu_item("Contacto", active=True if st.session_state.get('page') == "Contacto" else False)
+    ), unsafe_allow_html=True)
 
-    if option == "🏠 Home":
+    if st.session_state.get('page') == "Home":
         show_home()
 
-    elif option == "🖼️ Convertidor de Imágenes":
+    elif st.session_state.get('page') == "Convertidor de Imágenes":
         st.title("Convertidor de Imágenes")
         st.write("""
         ### Convertir Imágenes TIFF
@@ -226,7 +264,7 @@ def main():
                             mime="application/zip"
                         )
 
-    elif option == "🎥 Convertidor de WMP a AVI/MP4":
+    elif st.session_state.get('page') == "Convertidor de WMP a AVI/MP4":
         st.title("Convertidor de WMP a AVI/MP4")
         st.write("""
         ### Convertir Archivos de Video WMP
@@ -275,9 +313,11 @@ def main():
                             mime="application/zip"
                         )
 
-    elif option == "📧 Contacto":
+    elif st.session_state.get('page') == "Contacto":
         show_contact()
 
 if __name__ == "__main__":
+    st.session_state['page'] = st.session_state.get('page', "Home")
     main()
+
 
