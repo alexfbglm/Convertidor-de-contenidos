@@ -82,9 +82,9 @@ def process_zip_videos(zip_file, output_format):
     
     return output_zip_bytes
 
-
-# Estilos personalizados para la app, el selectbox y el menú lateral con recuadro resaltado
+# Cargar Font Awesome para los iconos
 st.markdown("""
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
     .main {
         background-color: #f0f2f6;
@@ -160,15 +160,21 @@ st.markdown("""
         background-color: #009dac;  /* Cambia al color corporativo */
         color: white;  /* Texto en blanco al seleccionar */
     }
+
+    /* Estilo para el menú de hamburguesa */
+    .css-1d3k3q9 a:before {
+        content: "\\2630 ";  /* Icono de menú de hamburguesa */
+        margin-right: 10px;
+    }
     </style>
     """, unsafe_allow_html=True)
 
 # Función para mostrar el menú con el estado de sesión
-def menu_item(label, active=False):
+def menu_item(label, icon, active=False):
     class_name = "menu-item"
     if active:
         class_name += " selected"
-    return f'<a class="{class_name}">{label}</a>'
+    return f'<a class="{class_name}"><i class="fa {icon}" style="margin-right:10px;"></i>{label}</a>'
 
 # Página de inicio con explicación
 def show_home():
@@ -209,10 +215,10 @@ def main():
         {}
     </div>
     """.format(
-        st.sidebar.button("🏠 Home", key="home_btn", on_click=lambda: st.session_state.update(page="Home")),
-        st.sidebar.button("🖼️ Convertidor de Imágenes", key="image_btn", on_click=lambda: st.session_state.update(page="Convertidor de Imágenes")),
-        st.sidebar.button("🎥 Convertidor de WMP a AVI/MP4", key="video_btn", on_click=lambda: st.session_state.update(page="Convertidor de WMP a AVI/MP4")),
-        st.sidebar.button("📧 Contacto", key="contact_btn", on_click=lambda: st.session_state.update(page="Contacto"))
+        st.sidebar.button(menu_item("Home", "fa-home"), key="home_btn", on_click=lambda: st.session_state.update(page="Home")),
+        st.sidebar.button(menu_item("Convertidor de Imágenes", "fa-image"), key="image_btn", on_click=lambda: st.session_state.update(page="Convertidor de Imágenes")),
+        st.sidebar.button(menu_item("Convertidor de WMP a AVI/MP4", "fa-video"), key="video_btn", on_click=lambda: st.session_state.update(page="Convertidor de WMP a AVI/MP4")),
+        st.sidebar.button(menu_item("Contacto", "fa-envelope"), key="contact_btn", on_click=lambda: st.session_state.update(page="Contacto"))
     ), unsafe_allow_html=True)
 
     if st.session_state['page'] == "Home":
@@ -321,3 +327,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
