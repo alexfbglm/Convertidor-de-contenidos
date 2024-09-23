@@ -134,11 +134,11 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# Función para mostrar el menú con el estado de sesión
+# Función para manejar el menú sin abrir nuevas pestañas
 def menu_item(label, icon, page):
     active_page = st.session_state.get("page", "Home")
-    active_class = "selected" if page == active_page else ""
-    return f'<a class="menu-item {active_class}" onclick="window.location.href=\'#{page}\'"><i class="fa {icon}" style="margin-right:10px;"></i>{label}</a>'
+    if st.button(f"{label}", key=page):
+        st.session_state.page = page
 
 # Función para convertir una imagen TIFF a JPG o PNG
 def convert_image_to_format(image, output_format):
@@ -221,7 +221,6 @@ def show_image_converter():
             if st.button("Convertir todas las imágenes"):
                 st.write("**Convirtiendo las imágenes...**")
                 # Aquí puedes añadir el proceso para manejar un archivo ZIP
-                # output_zip = process_zip_file(uploaded_zip, output_format)
                 st.success("**Todas las imágenes han sido convertidas!**")
                 # Agregar botón para descargar ZIP resultante
 
@@ -287,13 +286,16 @@ def main():
         st.session_state["page"] = "Home"
     
     # Menú lateral
-    st.sidebar.markdown(menu_item("Home", "fa-home", "Home"), unsafe_allow_html=True)
-    st.sidebar.markdown(menu_item("Convertidor de Imágenes", "fa-image", "Convertidor de Imágenes"), unsafe_allow_html=True)
-    st.sidebar.markdown(menu_item("Convertidor de WMP a AVI/MP4", "fa-video", "Convertidor de WMP a AVI/MP4"), unsafe_allow_html=True)
-    st.sidebar.markdown(menu_item("Contacto", "fa-envelope", "Contacto"), unsafe_allow_html=True)
+    st.sidebar.write("### Menú")
+    menu_item("Home", "fa-home", "Home")
+    menu_item("Convertidor de Imágenes", "fa-image", "Convertidor de Imágenes")
+    menu_item("Convertidor de WMP a AVI/MP4", "fa-video", "Convertidor de WMP a AVI/MP4")
+    menu_item("Contacto", "fa-envelope", "Contacto")
 
     # Mostrar la página actual
     show_page()
 
 if __name__ == "__main__":
+    main()
+
     main()
