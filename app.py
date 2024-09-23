@@ -82,7 +82,7 @@ def process_zip_videos(zip_file, output_format):
     
     return output_zip_bytes
 
-# Estilos personalizados para la app, el selectbox y el menú lateral
+# Estilos personalizados para la app, el selectbox y el menú lateral con íconos
 st.markdown("""
     <style>
     .main {
@@ -167,17 +167,17 @@ def show_contact():
 
 # Función principal de la app
 def main():
-    st.sidebar.title("Main Menu")
-    # Menú lateral con opciones
+    st.sidebar.title("📋 Main Menu")
+    # Menú lateral con opciones y emoticonos
     option = st.sidebar.radio(
         "",
-        ("Home", "Convertidor de Imágenes", "Convertidor de WMP a AVI/MP4", "Contacto")
+        ("🏠 Home", "🖼️ Convertidor de Imágenes", "🎥 Convertidor de WMP a AVI/MP4", "📧 Contacto")
     )
 
-    if option == "Home":
+    if option == "🏠 Home":
         show_home()
 
-    elif option == "Convertidor de Imágenes":
+    elif option == "🖼️ Convertidor de Imágenes":
         st.title("Convertidor de Imágenes")
         st.write("""
         ### Convertir Imágenes TIFF
@@ -226,7 +226,7 @@ def main():
                             mime="application/zip"
                         )
 
-    elif option == "Convertidor de WMP a AVI/MP4":
+    elif option == "🎥 Convertidor de WMP a AVI/MP4":
         st.title("Convertidor de WMP a AVI/MP4")
         st.write("""
         ### Convertir Archivos de Video WMP
@@ -275,8 +275,9 @@ def main():
                             mime="application/zip"
                         )
 
-    elif option == "Contacto":
+    elif option == "📧 Contacto":
         show_contact()
 
 if __name__ == "__main__":
     main()
+
