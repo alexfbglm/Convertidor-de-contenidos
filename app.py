@@ -1,20 +1,19 @@
 import streamlit as st
 from PIL import Image
-import os
 import io
 
 # Función para comprimir la imagen si excede los 30 MB
 def compress_image(image, output_format, max_size_mb=30):
     quality = 95
     img_bytes = io.BytesIO()
-    image.save(img_bytes, format=output_format.upper(), quality=quality)
     
-    # Reducir la calidad gradualmente si excede los 30 MB
+    # Guardar la imagen y verificar el tamaño
+    image.save(img_bytes, format=output_format.upper(), quality=quality)
     while img_bytes.tell() > max_size_mb * 1024 * 1024 and quality > 10:
         quality -= 5
-        img_bytes = io.BytesIO()
+        img_bytes = io.BytesIO()  # Reiniciar el buffer
         image.save(img_bytes, format=output_format.upper(), quality=quality)
-        
+    
     return img_bytes
 
 # Función para convertir la imagen a formato JPG o PNG
@@ -49,7 +48,7 @@ def main():
                 label="Descargar imagen convertida",
                 data=output_image.getvalue(),
                 file_name=f"imagen_convertida.{output_format}",
-                mime=f"image/{output_format}"
+                mime=f"image/{'jpeg' if output_format == 'jpg' else 'png'}"
             )
 
 if __name__ == "__main__":
