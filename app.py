@@ -84,15 +84,17 @@ def process_zip_videos(zip_file, output_format):
 
 # Streamlit App
 def main():
-    st.title("Convertidor")
-
-    # Panel lateral para seleccionar el tipo de conversión
-    conversion_option = st.sidebar.selectbox(
+    st.sidebar.title("Menú")
+    # Menú para elegir la página actual
+    option = st.sidebar.radio(
         "Selecciona una opción",
-        ("Convertidor de Imágenes", "Convertidor de WMP a AVI/MP4")
+        ("Inicio", "Convertidor de Imágenes", "Convertidor de WMP a AVI/MP4")
     )
 
-    if conversion_option == "Convertidor de Imágenes":
+    if option == "Inicio":
+        show_home()
+
+    elif option == "Convertidor de Imágenes":
         output_format = st.selectbox("Selecciona el formato de salida", ['jpg', 'png'])
 
         # Preguntar si el usuario quiere convertir una o varias imágenes
@@ -136,7 +138,7 @@ def main():
                             mime="application/zip"
                         )
 
-    elif conversion_option == "Convertidor de WMP a AVI/MP4":
+    elif option == "Convertidor de WMP a AVI/MP4":
         output_format = st.selectbox("Selecciona el formato de salida", ['mp4', 'avi'])
 
         # Preguntar si el usuario quiere convertir uno o varios videos
@@ -182,3 +184,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
