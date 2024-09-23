@@ -82,7 +82,6 @@ def process_zip_videos(zip_file, output_format):
     
     return output_zip_bytes
 
-
 # Cargar Font Awesome para los iconos
 st.markdown("""
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -141,6 +140,7 @@ def menu_item(label, icon, page):
     active_class = "selected" if page == active_page else ""
     if st.sidebar.button(f"{label}", key=page):
         st.session_state.page = page
+    return f'<a class="menu-item {active_class}" href="#" onclick="window.location.href=\'#{page}\'"><i class="fa {icon}" style="margin-right:10px;"></i>{label}</a>'
 
 # Función para convertir una imagen TIFF a JPG o PNG
 def convert_image_to_format(image, output_format):
@@ -289,10 +289,10 @@ def main():
         st.session_state["page"] = "Home"
     
     # Menú lateral
-    menu_item("Home", "fa-home", "Home")
-    menu_item("Convertidor de Imágenes", "fa-image", "Convertidor de Imágenes")
-    menu_item("Convertidor de WMP a AVI/MP4", "fa-video", "Convertidor de WMP a AVI/MP4")
-    menu_item("Contacto", "fa-envelope", "Contacto")
+    st.sidebar.markdown(menu_item("Home", "fa-home", "Home"), unsafe_allow_html=True)
+    st.sidebar.markdown(menu_item("Convertidor de Imágenes", "fa-image", "Convertidor de Imágenes"), unsafe_allow_html=True)
+    st.sidebar.markdown(menu_item("Convertidor de WMP a AVI/MP4", "fa-video", "Convertidor de WMP a AVI/MP4"), unsafe_allow_html=True)
+    st.sidebar.markdown(menu_item("Contacto", "fa-envelope", "Contacto"), unsafe_allow_html=True)
 
     # Mostrar la página actual
     show_page()
