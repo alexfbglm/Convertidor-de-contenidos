@@ -82,6 +82,33 @@ def process_zip_videos(zip_file, output_format):
     
     return output_zip_bytes
 
+
+# Estilos personalizados para la app
+st.markdown("""
+    <style>
+    .main {
+        background-color: #f0f2f6;
+    }
+    .stButton>button {
+        background-color: #009dac;
+        color: white;
+        border-radius: 8px;
+    }
+    .stButton>button:hover {
+        background-color: #007b8b;
+    }
+    .css-1aumxhk {  # Sidebar title style
+        color: #223848;
+    }
+    h1 {
+        color: #009dac;
+    }
+    h2 {
+        color: #223848;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
 # Página de inicio con explicación
 def show_home():
     st.title("Bienvenido al Convertidor de Imágenes y Videos")
@@ -99,7 +126,7 @@ def show_home():
     ¡Es simple y rápido!
     """)
 
-# Streamlit App
+# Función principal de la app
 def main():
     st.sidebar.title("Menú")
     # Menú para elegir la página actual
@@ -112,6 +139,7 @@ def main():
         show_home()
 
     elif option == "Convertidor de Imágenes":
+        st.title("Convertidor de Imágenes")
         output_format = st.selectbox("Selecciona el formato de salida", ['jpg', 'png'])
 
         # Preguntar si el usuario quiere convertir una o varias imágenes
@@ -156,6 +184,7 @@ def main():
                         )
 
     elif option == "Convertidor de WMP a AVI/MP4":
+        st.title("Convertidor de WMP a AVI/MP4")
         output_format = st.selectbox("Selecciona el formato de salida", ['mp4', 'avi'])
 
         # Preguntar si el usuario quiere convertir uno o varios videos
@@ -201,4 +230,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
