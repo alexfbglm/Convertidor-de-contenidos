@@ -82,8 +82,7 @@ def process_zip_videos(zip_file, output_format):
     
     return output_zip_bytes
 
-
-# Estilos personalizados para la app
+# Estilos personalizados para la app y el menú lateral
 st.markdown("""
     <style>
     .main {
@@ -97,7 +96,7 @@ st.markdown("""
     .stButton>button:hover {
         background-color: #007b8b;
     }
-    .css-1aumxhk {  # Sidebar title style
+    .css-1aumxhk {  /* Sidebar title style */
         color: #223848;
     }
     h1 {
@@ -105,6 +104,24 @@ st.markdown("""
     }
     h2 {
         color: #223848;
+    }
+    /* Estilo para el sidebar */
+    .css-1d391kg {  /* Cambiar el color de fondo del sidebar */
+        background-color: #ffffff !important;
+        border-radius: 15px;
+        padding: 10px;
+    }
+    .css-qbe2hs {  /* Color para la selección activa del menú */
+        background-color: #ff6b6b !important;
+        color: white;
+        border-radius: 10px;
+    }
+    .css-1d3k3q9 a {
+        color: #223848 !important;
+        text-decoration: none;
+    }
+    .css-1d3k3q9 a:hover {
+        color: #009dac !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -126,20 +143,33 @@ def show_home():
     ¡Es simple y rápido!
     """)
 
+# Página de contacto
+def show_contact():
+    st.title("Contacto")
+    st.write("""
+    ¿Tienes alguna otra duda adicional?
+    
+    Contacta con alejandro.fernandez-bravo@leroymerlin.es
+    """)
+
 # Función principal de la app
 def main():
-    st.sidebar.title("Menú")
-    # Menú para elegir la página actual
+    st.sidebar.title("Main Menu")
+    # Menú lateral con opciones
     option = st.sidebar.radio(
-        "Selecciona una opción",
-        ("Inicio", "Convertidor de Imágenes", "Convertidor de WMP a AVI/MP4")
+        "",
+        ("Home", "Convertidor de Imágenes", "Convertidor de WMP a AVI/MP4", "Contacto")
     )
 
-    if option == "Inicio":
+    if option == "Home":
         show_home()
 
     elif option == "Convertidor de Imágenes":
         st.title("Convertidor de Imágenes")
+        st.write("""
+        ### Convertir Imágenes TIFF
+        Este convertidor permite transformar imágenes en formato **TIFF** a los formatos **JPG** o **PNG**. Puedes seleccionar si quieres convertir una sola imagen o varias imágenes subiendo un archivo ZIP.
+        """)
         output_format = st.selectbox("Selecciona el formato de salida", ['jpg', 'png'])
 
         # Preguntar si el usuario quiere convertir una o varias imágenes
@@ -185,6 +215,10 @@ def main():
 
     elif option == "Convertidor de WMP a AVI/MP4":
         st.title("Convertidor de WMP a AVI/MP4")
+        st.write("""
+        ### Convertir Archivos de Video WMP
+        Este convertidor te permite transformar archivos de video en formato **WMP** a **AVI** o **MP4**. Puedes seleccionar si quieres convertir un solo video o varios videos subiendo un archivo ZIP.
+        """)
         output_format = st.selectbox("Selecciona el formato de salida", ['mp4', 'avi'])
 
         # Preguntar si el usuario quiere convertir uno o varios videos
@@ -228,7 +262,8 @@ def main():
                             mime="application/zip"
                         )
 
+    elif option == "Contacto":
+        show_contact()
+
 if __name__ == "__main__":
     main()
-
-
