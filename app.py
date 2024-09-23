@@ -6,7 +6,7 @@ import io
 def compress_image(image, output_format, max_size_mb=30):
     quality = 95
     img_bytes = io.BytesIO()
-    
+
     # Guardar la imagen y verificar el tamaño
     image.save(img_bytes, format=output_format.upper(), quality=quality)
     while img_bytes.tell() > max_size_mb * 1024 * 1024 and quality > 10:
@@ -35,21 +35,30 @@ def main():
         # Mostrar la imagen original
         image = Image.open(uploaded_file)
         st.image(image, caption='Imagen original', use_column_width=True)
+        
+        st.write("**Archivo cargado correctamente.**")
 
         # Seleccionar formato de salida
         output_format = st.selectbox("Selecciona el formato de salida", ['jpg', 'png'])
 
+        # Mostrar botón de conversión solo después de subir la imagen
         if st.button("Convertir"):
+            st.write("**Convirtiendo la imagen...**")
+            
             # Convertir la imagen
-            output_image = convert_image_to_format(image, output_format)
-
-            # Descargar el archivo convertido
-            st.download_button(
-                label="Descargar imagen convertida",
-                data=output_image.getvalue(),
-                file_name=f"imagen_convertida.{output_format}",
-                mime=f"image/{'jpeg' if output_format == 'jpg' else 'png'}"
-            )
+            try:
+                output_image = convert_image_to_format(image, output_format)
+                st.success("**Conversión completada!**")
+                
+                # Descargar el archivo convertido
+                st.download_button(
+                    label="Descargar imagen convertida",
+                    data=output_image.getvalue(),
+                    file_name=f"imagen_convertida.{output_format}",
+                    mime=f"image/{'jpeg' if output_format == 'jpg' else 'png'}"
+                )
+            except Exception as e:
+                st.error(f"Error durante la conversión: {str(e)}")
 
 if __name__ == "__main__":
     main()
