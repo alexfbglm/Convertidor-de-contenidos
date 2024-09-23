@@ -24,11 +24,16 @@ def convert_image_to_format(image, output_format):
     if output_format == 'jpg':
         # Convertir solo si la imagen no está ya en RGB
         if image.mode != 'RGB':
+            st.write(f"Convirtiendo imagen de modo {image.mode} a 'RGB'")  # Mensaje para depurar
             image = image.convert('RGB')  # Convertir a RGB si no está ya en ese modo
 
     # Comprimir y convertir la imagen
-    output_img = compress_image(image, output_format)
-    return output_img
+    try:
+        output_img = compress_image(image, output_format)
+        return output_img
+    except Exception as e:
+        st.error(f"Error durante la compresión de la imagen: {str(e)}")
+        return None
 
 # Streamlit App
 def main():
@@ -52,8 +57,8 @@ def main():
             st.write("**Convirtiendo la imagen...**")
             
             # Convertir la imagen
-            try:
-                output_image = convert_image_to_format(image, output_format)
+            output_image = convert_image_to_format(image, output_format)
+            if output_image is not None:
                 st.success("**Conversión completada!**")
                 
                 # Descargar el archivo convertido
@@ -63,8 +68,6 @@ def main():
                     file_name=f"imagen_convertida.{output_format}",
                     mime=f"image/{'jpeg' if output_format == 'jpg' else 'png'}"
                 )
-            except Exception as e:
-                st.error(f"Error durante la conversión: {str(e)}")
 
 if __name__ == "__main__":
     main()
