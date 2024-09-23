@@ -163,12 +163,12 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# Función para generar enlaces en el menú con estilo de recuadro resaltado
+# Función para mostrar el menú con el estado de sesión
 def menu_item(label, active=False):
     class_name = "menu-item"
     if active:
         class_name += " selected"
-    return f'<a class="{class_name}" href="#{label.lower()}">{label}</a>'
+    return f'<a class="{class_name}">{label}</a>'
 
 # Página de inicio con explicación
 def show_home():
@@ -198,6 +198,9 @@ def show_contact():
 
 # Función principal de la app
 def main():
+    if 'page' not in st.session_state:
+        st.session_state['page'] = "Home"
+
     st.sidebar.markdown("""
     <div class="menu">
         {}
@@ -206,16 +209,16 @@ def main():
         {}
     </div>
     """.format(
-        menu_item("Home", active=True if st.session_state.get('page') == "Home" else False),
-        menu_item("Convertidor de Imágenes", active=True if st.session_state.get('page') == "Convertidor de Imágenes" else False),
-        menu_item("Convertidor de WMP a AVI/MP4", active=True if st.session_state.get('page') == "Convertidor de WMP a AVI/MP4" else False),
-        menu_item("Contacto", active=True if st.session_state.get('page') == "Contacto" else False)
+        st.sidebar.button("🏠 Home", key="home_btn", on_click=lambda: st.session_state.update(page="Home")),
+        st.sidebar.button("🖼️ Convertidor de Imágenes", key="image_btn", on_click=lambda: st.session_state.update(page="Convertidor de Imágenes")),
+        st.sidebar.button("🎥 Convertidor de WMP a AVI/MP4", key="video_btn", on_click=lambda: st.session_state.update(page="Convertidor de WMP a AVI/MP4")),
+        st.sidebar.button("📧 Contacto", key="contact_btn", on_click=lambda: st.session_state.update(page="Contacto"))
     ), unsafe_allow_html=True)
 
-    if st.session_state.get('page') == "Home":
+    if st.session_state['page'] == "Home":
         show_home()
 
-    elif st.session_state.get('page') == "Convertidor de Imágenes":
+    elif st.session_state['page'] == "Convertidor de Imágenes":
         st.title("Convertidor de Imágenes")
         st.write("""
         ### Convertir Imágenes TIFF
@@ -264,7 +267,7 @@ def main():
                             mime="application/zip"
                         )
 
-    elif st.session_state.get('page') == "Convertidor de WMP a AVI/MP4":
+    elif st.session_state['page'] == "Convertidor de WMP a AVI/MP4":
         st.title("Convertidor de WMP a AVI/MP4")
         st.write("""
         ### Convertir Archivos de Video WMP
@@ -313,11 +316,8 @@ def main():
                             mime="application/zip"
                         )
 
-    elif st.session_state.get('page') == "Contacto":
+    elif st.session_state['page'] == "Contacto":
         show_contact()
 
 if __name__ == "__main__":
-    st.session_state['page'] = st.session_state.get('page', "Home")
     main()
-
-
