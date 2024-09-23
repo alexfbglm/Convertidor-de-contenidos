@@ -280,13 +280,9 @@ def show_page():
     else:
         show_home()
 
-# Página principal de la app
+# Función principal
 def main():
-    if "page" not in st.session_state:
-        st.session_state["page"] = "Home"
-    
-    # Menú lateral
-    st.sidebar.write("### Menú")
+    st.sidebar.title("Menú")
     menu_item("Home", "fa-home", "Home")
     menu_item("Convertidor de Imágenes", "fa-image", "Convertidor de Imágenes")
     menu_item("Convertidor de WMP a AVI/MP4", "fa-video", "Convertidor de WMP a AVI/MP4")
