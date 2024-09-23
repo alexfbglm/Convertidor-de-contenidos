@@ -82,6 +82,23 @@ def process_zip_videos(zip_file, output_format):
     
     return output_zip_bytes
 
+# Página de inicio con explicación
+def show_home():
+    st.title("Bienvenido al Convertidor de Imágenes y Videos")
+    st.write("""
+    ### ¿Qué puedes hacer con esta herramienta?
+    Esta aplicación te permite realizar las siguientes conversiones:
+    - Convertir **imágenes TIFF** a **JPG** o **PNG**.
+    - Convertir archivos de video **WMP** a **AVI** o **MP4**.
+    
+    ### ¿Cómo funciona?
+    1. Selecciona el tipo de conversión que deseas realizar.
+    2. Sube el archivo que quieras convertir, o varios archivos en un ZIP.
+    3. Descarga el archivo convertido cuando el proceso haya terminado.
+    
+    ¡Es simple y rápido!
+    """)
+
 # Streamlit App
 def main():
     st.sidebar.title("Menú")
