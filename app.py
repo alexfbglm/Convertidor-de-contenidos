@@ -137,7 +137,7 @@ st.markdown("""
 # Función para manejar el menú sin abrir nuevas pestañas
 def menu_item(label, icon, page):
     active_page = st.session_state.get("page", "Home")
-    if st.button(f"{label}", key=page):
+    if st.button(f"{label}", key=f"menu_button_{page}"):
         st.session_state.page = page
 
 # Función para convertir una imagen TIFF a JPG o PNG
@@ -187,20 +187,20 @@ def show_image_converter():
     ### Convertir Imágenes TIFF
     Este convertidor permite transformar imágenes en formato **TIFF** a los formatos **JPG** o **PNG**. Puedes seleccionar si quieres convertir una sola imagen o varias imágenes subiendo un archivo ZIP.
     """)
-    output_format = st.selectbox("Selecciona el formato de salida", ['jpg', 'png'])
+    output_format = st.selectbox("Selecciona el formato de salida", ['jpg', 'png'], key='img_format')
 
     # Preguntar si el usuario quiere convertir una o varias imágenes
-    conversion_type = st.radio("¿Qué quieres convertir?", ('Una imagen', 'Varias imágenes (archivo ZIP)'))
+    conversion_type = st.radio("¿Qué quieres convertir?", ('Una imagen', 'Varias imágenes (archivo ZIP)'), key='img_conversion_type')
 
     if conversion_type == 'Una imagen':
-        uploaded_file = st.file_uploader("Sube una imagen TIFF para convertir", type=["tif", "tiff"])
+        uploaded_file = st.file_uploader("Sube una imagen TIFF para convertir", type=["tif", "tiff"], key='img_upload')
 
         if uploaded_file is not None:
             image = Image.open(uploaded_file)
             st.image(image, caption='Imagen original', use_column_width=True)
             st.write("**Archivo cargado correctamente.**")
 
-            if st.button("Convertir"):
+            if st.button("Convertir", key='img_convert_button'):
                 st.write("**Convirtiendo la imagen...**")
                 output_image = convert_image_to_format(image, output_format)
                 if output_image is not None:
@@ -213,12 +213,12 @@ def show_image_converter():
                     )
 
     elif conversion_type == 'Varias imágenes (archivo ZIP)':
-        uploaded_zip = st.file_uploader("Sube un archivo ZIP con imágenes TIFF para convertir", type=["zip"])
+        uploaded_zip = st.file_uploader("Sube un archivo ZIP con imágenes TIFF para convertir", type=["zip"], key='img_zip_upload')
 
         if uploaded_zip is not None:
             st.write("**Archivo ZIP cargado correctamente.**")
 
-            if st.button("Convertir todas las imágenes"):
+            if st.button("Convertir todas las imágenes", key='img_zip_convert_button'):
                 st.write("**Convirtiendo las imágenes...**")
                 # Aquí puedes añadir el proceso para manejar un archivo ZIP
                 st.success("**Todas las imágenes han sido convertidas!**")
@@ -231,17 +231,17 @@ def show_video_converter():
     ### Convertir Archivos de Video WMP
     Este convertidor te permite transformar archivos de video en formato **WMP** a **AVI** o **MP4**. Puedes seleccionar si quieres convertir un solo video o varios videos subiendo un archivo ZIP.
     """)
-    output_format = st.selectbox("Selecciona el formato de salida", ['mp4', 'avi'])
+    output_format = st.selectbox("Selecciona el formato de salida", ['mp4', 'avi'], key='video_format')
 
-    conversion_type = st.radio("¿Qué quieres convertir?", ('Un solo video', 'Varios videos (archivo ZIP)'))
+    conversion_type = st.radio("¿Qué quieres convertir?", ('Un solo video', 'Varios videos (archivo ZIP)'), key='video_conversion_type')
 
     if conversion_type == 'Un solo video':
-        uploaded_file = st.file_uploader("Sube un archivo WMP para convertir", type=["wmp"])
+        uploaded_file = st.file_uploader("Sube un archivo WMP para convertir", type=["wmp"], key='video_upload')
 
         if uploaded_file is not None:
             st.write("**Archivo WMP cargado correctamente.**")
 
-            if st.button("Convertir"):
+            if st.button("Convertir", key='video_convert_button'):
                 st.write("**Convirtiendo el archivo WMP...**")
                 output_video = convert_video_to_format(uploaded_file, output_format)
                 if output_video:
@@ -254,11 +254,11 @@ def show_video_converter():
                     )
 
     elif conversion_type == 'Varios videos (archivo ZIP)':
-        uploaded_zip = st.file_uploader("Sube un archivo ZIP con videos WMP para convertir", type=["zip"])
+        uploaded_zip = st.file_uploader("Sube un archivo ZIP con videos WMP para convertir", type=["zip"], key='video_zip_upload')
 
         if uploaded_zip is not None:
             st.write("**Archivo ZIP cargado correctamente.**")
-            if st.button("Convertir todos los videos"):
+            if st.button("Convertir todos los videos", key='video_zip_convert_button'):
                 st.write("**Convirtiendo los videos...**")
                 # Aquí puedes añadir el proceso para manejar un archivo ZIP de videos
 
@@ -296,6 +296,4 @@ def main():
     show_page()
 
 if __name__ == "__main__":
-    main()
-
     main()
