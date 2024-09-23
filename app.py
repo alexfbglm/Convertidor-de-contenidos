@@ -2,17 +2,16 @@ import streamlit as st
 from PIL import Image
 import io
 
-# Función para comprimir la imagen si excede los 30 MB
-def compress_image(image, output_format, max_size_mb=30):
-    quality = 95
+# Función para guardar y comprimir la imagen
+def save_image(image, output_format):
     img_bytes = io.BytesIO()
-
-    # Guardar la imagen y verificar el tamaño
-    image.save(img_bytes, format=output_format.upper(), quality=quality)
-    while img_bytes.tell() > max_size_mb * 1024 * 1024 and quality > 10:
-        quality -= 5
-        img_bytes = io.BytesIO()  # Reiniciar el buffer
-        image.save(img_bytes, format=output_format.upper(), quality=quality)
+    
+    # Convertir a RGB si es JPG y guardar la imagen
+    if output_format == 'jpg':
+        image = image.convert('RGB')  # Convertir a RGB si es JPG
+        image.save(img_bytes, format='JPEG', quality=85)  # Guardar con calidad fija para JPG
+    else:
+        image.save(img_bytes, format=output_format.upper())  # Guardar en PNG sin compresión de calidad
     
     return img_bytes
 
@@ -20,16 +19,8 @@ def compress_image(image, output_format, max_size_mb=30):
 def convert_image_to_format(image, output_format):
     output_format = output_format.lower()  # Asegurar que el formato esté en minúsculas
     
-    # Convertir a RGB si el formato es JPG
-    if output_format == 'jpg':
-        # Convertir solo si la imagen no está ya en RGB
-        if image.mode != 'RGB':
-            st.write(f"Convirtiendo imagen de modo {image.mode} a 'RGB'")  # Mensaje para depurar
-            image = image.convert('RGB')  # Convertir a RGB si no está ya en ese modo
-
-    # Comprimir y convertir la imagen
     try:
-        output_img = compress_image(image, output_format)
+        output_img = save_image(image, output_format)
         return output_img
     except Exception as e:
         st.error(f"Error durante la compresión de la imagen: {str(e)}")
