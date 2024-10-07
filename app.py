@@ -47,8 +47,10 @@ def process_zip_file(zip_file, output_format):
                             # Convertir la imagen
                             converted_image = convert_image_to_format(image, output_format)
                             if converted_image:
-                                # Guardar la imagen convertida en el nuevo ZIP
-                                output_zip.writestr(f"{os.path.splitext(file_name)[0]}_converted.{output_format}", converted_image.getvalue())
+                                # Obtener el nombre base sin la extensión
+                                base_name = os.path.splitext(file_name)[0]
+                                # Guardar la imagen convertida en el nuevo ZIP con el mismo nombre base y nueva extensión
+                                output_zip.writestr(f"{base_name}.{output_format}", converted_image.getvalue())
                         except Exception as e:
                             st.error(f"Error procesando {file_name}: {str(e)}")
     
@@ -122,8 +124,10 @@ def process_zip_videos(zip_file, output_format):
                         try:
                             converted_video = convert_video_to_format(file, output_format)
                             if converted_video:
-                                # Guardar el video convertido en el nuevo ZIP
-                                output_zip.writestr(f"{os.path.splitext(file_name)[0]}_converted.{output_format}", converted_video.getvalue())
+                                # Obtener el nombre base sin la extensión
+                                base_name = os.path.splitext(file_name)[0]
+                                # Guardar el video convertido en el nuevo ZIP con el mismo nombre base y nueva extensión
+                                output_zip.writestr(f"{base_name}.{output_format}", converted_video.getvalue())
                         except Exception as e:
                             st.error(f"Error procesando {file_name}: {str(e)}")
     
@@ -251,10 +255,14 @@ def main():
                         output_image = convert_image_to_format(image, output_format)
                         if output_image is not None:
                             st.success("**Conversión completada!**")
+                            # Obtener el nombre base sin la extensión
+                            base_name = os.path.splitext(uploaded_file.name)[0]
+                            # Crear el nombre del archivo convertido con la nueva extensión
+                            converted_file_name = f"{base_name}.{output_format}"
                             st.download_button(
                                 label="Descargar imagen convertida",
                                 data=output_image.getvalue(),
-                                file_name=f"imagen_convertida.{output_format}",
+                                file_name=converted_file_name,
                                 mime=f"image/{'jpeg' if output_format == 'jpg' else 'png'}"
                             )
                 except Exception as e:
@@ -274,7 +282,7 @@ def main():
                             st.download_button(
                                 label="Descargar archivo ZIP con imágenes convertidas",
                                 data=output_zip.getvalue(),
-                                file_name=f"imagenes_convertidas_{output_format}.zip",
+                                file_name=f"imagenes_convertidas.{output_format}.zip",
                                 mime="application/zip"
                             )
 
@@ -300,10 +308,14 @@ def main():
                         output_video = convert_video_to_format(uploaded_file, output_format)
                         if output_video:
                             st.success("**Conversión completada!**")
+                            # Obtener el nombre base sin la extensión
+                            base_name = os.path.splitext(uploaded_file.name)[0]
+                            # Crear el nombre del archivo convertido con la nueva extensión
+                            converted_file_name = f"{base_name}.{output_format}"
                             st.download_button(
                                 label="Descargar video convertido",
                                 data=output_video.getvalue(),
-                                file_name=f"video_convertido.{output_format}",
+                                file_name=converted_file_name,
                                 mime=f"video/{output_format}"
                             )
 
@@ -322,12 +334,16 @@ def main():
                             st.download_button(
                                 label="Descargar archivo ZIP con videos convertidos",
                                 data=output_zip.getvalue(),
-                                file_name=f"videos_convertidos_{output_format}.zip",
+                                file_name=f"videos_convertidos.{output_format}.zip",
                                 mime="application/zip"
                             )
 
     elif option == "📧 Contacto":
         show_contact()
+
+if __name__ == "__main__":
+    main()
+
 
 if __name__ == "__main__":
     main()
